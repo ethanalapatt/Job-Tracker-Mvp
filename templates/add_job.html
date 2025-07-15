@@ -1,0 +1,68 @@
+# templates/add_job.html
+# =============================================================================
+
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Add New Job Application</h2>
+
+<form method="POST" style="max-width: 600px;">
+    <div class="form-group">
+        <label for="company">Company:</label>
+        <input type="text" id="company" name="company" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="position">Position:</label>
+        <input type="text" id="position" name="position" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="stage">Stage:</label>
+        <select id="stage" name="stage" required>
+            <option value="Making application">Making application</option>
+            <option value="Waiting for job to open">Waiting for job to open</option>
+            <option value="Applied">Applied</option>
+            <option value="Accepted, Start Process">Accepted, Start Process</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Waiting for a referral">Waiting for a referral</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="linkedin_score">LinkedIn Score:</label>
+        <input type="number" id="linkedin_score" name="linkedin_score" step="0.1" value="1.0">
+    </div>
+    
+    <div class="form-group">
+        <label for="num_connections">Number of Connections:</label>
+        <input type="number" id="num_connections" name="num_connections" value="0">
+    </div>
+    
+    <div class="form-group">
+        <label for="apply_date">Apply Date:</label>
+        <input type="date" id="apply_date" name="apply_date">
+    </div>
+    
+    <div class="form-group">
+        <label for="response_date">Response Date:</label>
+        <input type="date" id="response_date" name="response_date">
+    </div>
+    
+    <div class="form-group">
+        <label for="posting_url">Posting URL:</label>
+        <input type="url" id="posting_url" name="posting_url" placeholder="https://...">
+    </div>
+    
+    <div class="form-group">
+        <label>
+            <input type="checkbox" name="referral" style="width: auto; margin-right: 10px;"> Referral
+        </label>
+    </div>
+    
+    <div style="margin-top: 20px;">
+        <button type="submit" class="btn">Add Application</button>
+        <a href="{{ url_for('index') }}" class="btn" style="background: #6c757d; margin-left: 10px;">Cancel</a>
+    </div>
+</form>
+{% endblock %}
