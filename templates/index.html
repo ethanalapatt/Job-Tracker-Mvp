@@ -1,0 +1,95 @@
+ templates/index.html
+# =============================================================================
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="stats">
+    <div class="stat-card">
+        <h3>Making Application: {{ stage_counts.get('Making application', 0) }}</h3>
+    </div>
+    <div class="stat-card">
+        <h3>Waiting for Job to Open: {{ stage_counts.get('Waiting for job to open', 0) }}</h3>
+    </div>
+    <div class="stat-card">
+        <h3>Applied: {{ stage_counts.get('Applied', 0) }}</h3>
+    </div>
+    <div class="stat-card">
+        <h3>Accepted: {{ stage_counts.get('Accepted, Start Process', 0) }}</h3>
+    </div>
+    <div class="stat-card">
+        <h3>Rejected: {{ stage_counts.get('Rejected', 0) }}</h3>
+    </div>
+    <div class="stat-card">
+        <h3>Waiting for Referral: {{ stage_counts.get('Waiting for a referral', 0) }}</h3>
+    </div>
+</div>
+
+<div style="margin-bottom: 20px;">
+    <a href="{{ url_for('add_job') }}" class="btn">Add New Application</a>
+</div>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th>Position</th>
+                <th>Stage</th>
+                <th>LinkedIn Score</th>
+                <th># of Connections</th>
+                <th>Apply Date</th>
+                <th>Response Date</th>
+                <th>Posting URL</th>
+                <th>Referral</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in applications %}
+            <tr>
+                <td>{{ app[1] }}</td>
+                <td>{{ app[2] }}</td>
+                <td>
+                    {% if app[3] == 'Applied' %}
+                        <span class="stage-applied">{{ app[3] }}</span>
+                    {% elif app[3] == 'Rejected' %}
+                        <span class="stage-rejected">{{ app[3] }}</span>
+                    {% elif app[3] == 'Making application' %}
+                        <span class="stage-making">{{ app[3] }}</span>
+                    {% elif app[3] == 'Waiting for job to open' %}
+                        <span class="stage-waiting-job">{{ app[3] }}</span>
+                    {% elif app[3] == 'Accepted, Start Process' %}
+                        <span class="stage-accepted">{{ app[3] }}</span>
+                    {% else %}
+                        <span class="stage-waiting">{{ app[3] }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ app[4] }}</td>
+                <td>{{ app[5] }}</td>
+                <td>{{ app[6] or '' }}</td>
+                <td>{{ app[7] or '' }}</td>
+                <td>
+                    {% if app[8] %}
+                        <a href="{{ app[8] }}" target="_blank" style="color: #007bff;">Link</a>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if app[9] %}
+                        <span class="referral-badge">Referred!</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('update_stage', app_id=app[0], new_stage='Making application') }}" class="btn btn-small" style="background: #fd7e14;">Making</a>
+                    <a href="{{ url_for('update_stage', app_id=app[0], new_stage='Waiting for job to open') }}" class="btn btn-small" style="background: #6f42c1;">Waiting</a>
+                    <a href="{{ url_for('update_stage', app_id=app[0], new_stage='Applied') }}" class="btn btn-small btn-success">Applied</a>
+                    <a href="{{ url_for('update_stage', app_id=app[0], new_stage='Accepted, Start Process') }}" class="btn btn-small" style="background: #28a745;">Accepted</a>
+                    <a href="{{ url_for('update_stage', app_id=app[0], new_stage='Rejected') }}" class="btn btn-small btn-danger">Rejected</a>
+                    <a href="{{ url_for('update_stage', app_id=app[0], new_stage='Waiting for a referral') }}" class="btn btn-small btn-warning">Referral</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
